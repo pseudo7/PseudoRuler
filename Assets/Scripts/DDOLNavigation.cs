@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DDOLNavigation : MonoBehaviour
 {
     public static DDOLNavigation Instance;
 
-    [Header("Functionality")]
+    [Header("Ruler")]
     public float initSize = 10.0f;
 
     [Header("UI Elements")]
     public InputField sizeIF;
-    //public InputField maxSizeIF;
     public Slider sizeSlider;
     public Transform rulerTransform;
 
@@ -29,8 +29,12 @@ public class DDOLNavigation : MonoBehaviour
 
         UpdateScale(initSize);
         UpdateSlider(initSize);
-        //UpdateMaxSize(initSize);
         sizeIF.text = initSize.ToString("#.0");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
     public void UpdateScale()
@@ -40,9 +44,14 @@ public class DDOLNavigation : MonoBehaviour
         rulerTransform.localScale = new Vector3(size / 100, RULER_WIDTH, 1);
     }
 
-    void UpdateScale(float size)
+    public void LoadNextScene()
     {
-        rulerTransform.localScale = new Vector3(size / 100, RULER_WIDTH, 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void LoadPreviousScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void UpdateSlider()
@@ -52,30 +61,15 @@ public class DDOLNavigation : MonoBehaviour
         sizeIF.text = sizeSlider.value.ToString("0.0");
     }
 
-    void UpdateSlider(float size)
+    void UpdateScale(float size)
     {
-        if (rulerTransform.localScale.x * 100 < size)
-        {
-            sizeSlider.maxValue = size;
-            sizeSlider.value = size;
-            //maxSizeIF.text = size.ToString("0.0");
-            UpdateScale(size);
-        }
+        rulerTransform.localScale = new Vector3(size / 100, RULER_WIDTH, 1);
     }
 
-    //public void UpdateMaxSize()
-    //{
-    //    sizeSlider.maxValue = float.Parse(maxSizeIF.text);
-    //}
-
-    //void UpdateMaxSize(float size)
-    //{
-    //    if (float.Parse(maxSizeIF.text) < size)
-    //    {
-    //        sizeSlider.maxValue = size;
-    //        sizeSlider.value = size;
-    //        maxSizeIF.text = size.ToString("0.0");
-    //    }
-    //}
-
+    void UpdateSlider(float size)
+    {
+        sizeSlider.maxValue = size;
+        sizeSlider.value = size;
+        UpdateScale(size);
+    }
 }
