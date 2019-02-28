@@ -18,7 +18,5 @@ public class LineUI : MonoBehaviour
     {
         transform.position = (start + end) / 2 + Vector3.up * .05f;
         transform.LookAt(mainCamTransform);
-        //transform.rotation = Quaternion.LookRotation(transform.position - mainCamTransform.position);
-        distanceText.text = string.Format("{0} cm", (Vector3.Distance(start, end) * 100).ToString("00#.##"));
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class DDOLNavigation : MonoBehaviour
 {
@@ -13,11 +14,12 @@ public class DDOLNavigation : MonoBehaviour
     public GameObject rulerPrefab;
 
     [Header("UI Elements")]
+    public GameObject gSensor;
+    public Transform rulerTransform;
     public InputField sizeIF;
     public Slider sizeSlider;
-    public GameObject gSensor;
     public Button nextSceneButton;
-    public Transform rulerTransform;
+    public Text currentDistanceText;
 
     static float lastTouch;
     static float lastSliderValue = 10;
@@ -31,6 +33,7 @@ public class DDOLNavigation : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
         else Destroy(gameObject);
 
@@ -39,10 +42,14 @@ public class DDOLNavigation : MonoBehaviour
         sizeIF.text = initSize.ToString("#.0");
     }
 
-    private void Update()
+    private void OnSceneUnloaded(Scene scene)
+    {
+        //FindObjectOfType<StreamManager>().webCam.Stop();
+    }
+
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
-
 
         switch (SceneManager.GetActiveScene().buildIndex)
         {
@@ -53,13 +60,16 @@ public class DDOLNavigation : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        if (scene.buildIndex == 1) Camera.main.transform.localPosition = new Vector3(0, .3f * (10 / lastSliderValue), 0);
+        if (scene.buildIndex == 1)
+        {
+            Camera.main.transform.localPosition = new Vector3(0, .3f * (10 / lastSliderValue), 0);
+            currentDistanceText = FindObjectOfType<Text>();
+        }
     }
 
     void CheckForNewRuler()
     {
-        if (lastTouch == 0)
-            lastTouch = Time.timeSinceLevelLoad;
+        if (lastTouch == 0) lastTouch = Time.timeSinceLevelLoad;
         else if (Time.timeSinceLevelLoad - lastTouch > 1)
         {
             if (Input.touchCount == 4) Instantiate(rulerPrefab);
@@ -78,6 +88,13 @@ public class DDOLNavigation : MonoBehaviour
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //StartCoroutine(Load());
+    }
+
+    IEnumerator Load()
+    {
+        FindObjectOfType<StreamManager>().webCam.Stop();
+        yield return new WaitForSeconds(1);
     }
 
     public void LoadPreviousScene()

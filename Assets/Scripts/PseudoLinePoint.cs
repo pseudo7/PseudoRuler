@@ -39,10 +39,9 @@ public class PseudoLinePoint : MonoBehaviour
     void MovePoint()
     {
         Vector3 mousePos = Input.mousePosition;
-        RaycastHit hit;
         Vector3 mouseF = mainCam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, mainCam.farClipPlane));
         Vector3 mouseN = mainCam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, mainCam.nearClipPlane));
 
-        if (Physics.Raycast(mouseN, mouseF - mouseN, out hit, 1000, layerMask, QueryTriggerInteraction.Ignore)) transform.position = hit.point;
+        if (Physics.Raycast(mouseN, mouseF - mouseN, out RaycastHit hit, 1000, layerMask, QueryTriggerInteraction.Ignore)) transform.position = hit.point;
     }
 }

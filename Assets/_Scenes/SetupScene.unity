@@ -266,7 +266,7 @@ Transform:
   m_LocalScale: {x: 0, y: 0.0254, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &154999382
 GameObject:
@@ -489,7 +489,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &512626474
 GameObject:
@@ -930,7 +930,7 @@ RectTransform:
   - {fileID: 154999383}
   - {fileID: 786399543}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1196,7 +1196,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -1285,6 +1285,7 @@ MonoBehaviour:
   fitter: {fileID: 1400528187}
   camQuality: 100
   useFrontCamera: 0
+  webCam: {fileID: 0}
 --- !u!114 &1400528187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1795,11 +1796,12 @@ MonoBehaviour:
   initSize: 10
   rulerPrefab: {fileID: 7484062290061196086, guid: 92d872fa0636a564d80f77937b6a87eb,
     type: 3}
+  gSensor: {fileID: 1946539724}
+  rulerTransform: {fileID: 136739777}
   sizeIF: {fileID: 1474283132}
   sizeSlider: {fileID: 1649882319}
-  gSensor: {fileID: 1946539724}
   nextSceneButton: {fileID: 1236301697}
-  rulerTransform: {fileID: 136739777}
+  currentDistanceText: {fileID: 0}
 --- !u!1 &2136628223
 GameObject:
   m_ObjectHideFlags: 0

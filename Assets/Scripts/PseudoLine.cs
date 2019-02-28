@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class PseudoLine : MonoBehaviour
 {
-    public LineUI lineUI;
     LineRenderer currentLine;
 
     private void Awake()
@@ -19,6 +18,7 @@ public class PseudoLine : MonoBehaviour
     public void UpdatePoint(bool isStartPoint, Vector3 point)
     {
         currentLine.SetPosition(isStartPoint ? 0 : 1, point);
-        lineUI.UpdateDistance(currentLine.GetPosition(0), currentLine.GetPosition(1));
+        DDOLNavigation.Instance.currentDistanceText.text = string.Format("Distance: {0} cm",
+        (Vector3.Distance(currentLine.GetPosition(0), currentLine.GetPosition(1)) * 100).ToString("00#.##"));
     }
 }
