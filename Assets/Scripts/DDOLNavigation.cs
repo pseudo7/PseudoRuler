@@ -10,11 +10,17 @@ public class DDOLNavigation : MonoBehaviour
 
     [Header("Ruler")]
     public float initSize = 10.0f;
+    public GameObject rulerPrefab;
 
     [Header("UI Elements")]
     public InputField sizeIF;
     public Slider sizeSlider;
+    public GameObject gSensor;
+    public Button nextSceneButton;
     public Transform rulerTransform;
+
+    static float lastTouch;
+    static float lastSliderValue = 10;
 
     const float RULER_WIDTH = .0254f;
 
@@ -24,6 +30,7 @@ public class DDOLNavigation : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else Destroy(gameObject);
 
@@ -35,12 +42,36 @@ public class DDOLNavigation : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
+
+        switch (SceneManager.GetActiveScene().buildIndex)
+        {
+            case 0: CheckGSensor(); break;
+            case 1: CheckForNewRuler(); break;
+        }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (scene.buildIndex == 1) Camera.main.transform.localPosition = new Vector3(0, .3f * (10 / lastSliderValue), 0);
+    }
+
+    void CheckForNewRuler()
+    {
+        if (lastTouch == 0)
+            lastTouch = Time.timeSinceLevelLoad;
+        else if (Time.timeSinceLevelLoad - lastTouch > 1)
+        {
+            if (Input.touchCount == 4) Instantiate(rulerPrefab);
+            lastTouch = 0;
+        }
     }
 
     public void UpdateScale()
     {
         float size = float.Parse(sizeIF.text);
         if (size > 10) { sizeIF.text = 10.ToString("0.0"); return; }
+        lastSliderValue = size;
         rulerTransform.localScale = new Vector3(size / 100, RULER_WIDTH, 1);
     }
 
@@ -59,6 +90,15 @@ public class DDOLNavigation : MonoBehaviour
         if (sizeSlider.value > 10) { sizeSlider.value = 10; return; }
         UpdateScale(sizeSlider.value);
         sizeIF.text = sizeSlider.value.ToString("0.0");
+    }
+
+    void CheckGSensor()
+    {
+        Vector3 acc = Input.acceleration;
+        float accX = Mathf.Round(acc.x * 10);
+        float accY = Mathf.Round(acc.y * 10);
+        gSensor.SetActive(accY + accX == 0);
+        nextSceneButton.interactable = accY + accX == 0;
     }
 
     void UpdateScale(float size)

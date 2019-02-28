@@ -6,9 +6,10 @@ public class PseudoLinePoint : MonoBehaviour
 {
     public bool isStartPoint;
 
-    static PseudoLine currentLine;
     static Camera mainCam;
     static Transform camTransform;
+
+    PseudoLine currentLine;
     int layerMask;
 
     private void Awake()
