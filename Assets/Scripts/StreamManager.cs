@@ -9,10 +9,9 @@ public class StreamManager : MonoBehaviour
 
     [Range(1, 100)]
     public int camQuality = 20;
-
     public bool useFrontCamera;
 
-    public WebCamTexture webCam;
+    WebCamTexture webCam;
 
     void OnEnable()
     {
@@ -38,8 +37,6 @@ public class StreamManager : MonoBehaviour
         }
 
         fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-
-
 
         background.texture = webCam;
         webCam.Play();
@@ -69,9 +66,4 @@ public class StreamManager : MonoBehaviour
         background.rectTransform.localScale = new Vector3(1, webCam.videoVerticallyMirrored ? -1 : 1, 1);
         background.rectTransform.localEulerAngles = new Vector3(0, 0, -webCam.videoRotationAngle);
     }
-
-    //private void OnDestroy()
-    //{
-    //    webCam.Pause();
-    //}
 }

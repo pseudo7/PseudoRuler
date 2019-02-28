@@ -33,18 +33,12 @@ public class DDOLNavigation : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
         else Destroy(gameObject);
 
         UpdateScale(initSize);
         UpdateSlider(initSize);
         sizeIF.text = initSize.ToString("#.0");
-    }
-
-    private void OnSceneUnloaded(Scene scene)
-    {
-        //FindObjectOfType<StreamManager>().webCam.Stop();
     }
 
     void Update()
@@ -88,13 +82,6 @@ public class DDOLNavigation : MonoBehaviour
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        //StartCoroutine(Load());
-    }
-
-    IEnumerator Load()
-    {
-        FindObjectOfType<StreamManager>().webCam.Stop();
-        yield return new WaitForSeconds(1);
     }
 
     public void LoadPreviousScene()
