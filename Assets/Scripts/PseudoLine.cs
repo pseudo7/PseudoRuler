@@ -19,6 +19,6 @@ public class PseudoLine : MonoBehaviour
     {
         currentLine.SetPosition(isStartPoint ? 0 : 1, point);
         DDOLNavigation.Instance.currentDistanceText.text = string.Format("Distance: {0} cm",
-        (Vector3.Distance(currentLine.GetPosition(0), currentLine.GetPosition(1)) * 100).ToString("00#.##"));
+        (Vector3.Distance(currentLine.GetPosition(0), currentLine.GetPosition(1)) * 100).ToString("00#.00"));
     }
 }
